@@ -1,5 +1,5 @@
 ---
-- hosts: role_app
+- hosts: monitored_box
   gather_facts: False
 
   vars:
@@ -27,8 +27,14 @@
       setup:
       tags: always
 
+    - name: Check for common pretasks
+      local_action: stat path="{{shared_dir}}/common_pretasks.yml"
+      register: common_pretasks_exists
+      tags: always
+
     - name: Include common pretasks
       include_tasks: "{{shared_dir}}/common_pretasks.yml"
+      when: common_pretasks_exists.stat.exists == true
       tags: always
 
     - set_fact:
@@ -40,7 +46,7 @@
   roles:
 
     - {
-      role: "sa-prometheus-exporters",
+      role: "sa_prometheus_exporters",
       tags: ["create"],
       prometheus_exporters: "{{box_prometheus_exporters}}"
     }
@@ -49,5 +55,4 @@
 
     - debug: msg="Tasks section"
 
-    - debug: msg="Provider - |{{ box_provider }}| , Environment - |{{ env }}|"
 
