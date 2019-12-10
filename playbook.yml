@@ -13,8 +13,8 @@
     - debug: msg="Pre tasks section"
       tags: always
 
-    - name: ANSIBLE PYTHON | install python 2
-      raw: test -e /usr/bin/python || (apt -qqy update && apt install -qy python-minimal)
+    - name: ANSIBLE PYTHON | install python2 minimal if default python missing
+      raw: test -e /usr/bin/python || test -e /usr/bin/python3 || (apt -qqy update && apt install -qy python-minimal)
       become: yes
       tags: always
 
