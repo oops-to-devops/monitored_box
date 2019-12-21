@@ -57,3 +57,43 @@ Using gilt
         dst: provisioners/monitored_box
 ```
 
+
+Example of mapping in ec2 dynamic inventory
+
+```yaml
+plugin: aws_ec2
+# boto_profile: OPTIONAL_SPECIFY
+regions:
+  - us-east-1
+  - us-east-2
+  - us-west-1
+  - us-west-2
+filters:
+  vpc-id: vpc-0ec210f7af56a4846
+  tag:env: default
+  tag:role:
+    - proj
+  tag:Project: proj
+
+# keyed_groups may be used to create custom groups
+strict: False
+hostnames:
+  - ip-address
+groups:
+  # Workaround to add hosts to the group k8s-master and k8s-node since the
+  monitored_box: "'proj' == tags.role"
+#  monitored_box: true
+keyed_groups:
+  # add hosts to tag_Name_Value groups for each Name/Value tag pair
+  - prefix: tag
+    key: tags
+  - key: tags['role']
+    prefix: role
+  - key: tags['Name']
+    prefix: host
+  # create a group per region e.g. us_east_2
+  #- key: placement.region
+  #  prefix: region
+compose:
+  ansible_user: "'ubuntu'"
+```
