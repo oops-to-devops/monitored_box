@@ -16,7 +16,7 @@ Supported parameters overrides:
 
 Using with vagrant boilerplate (https://github.com/Voronenko/devops-vagrant-ansible-boilerplate)
 
-```
+```ruby
 
     config.vm.provision "monitored_box", type: "ansible" do |ansible|
         ansible.playbook = "deployment/provisioners/monitored_box/playbook.yml"
@@ -32,6 +32,28 @@ Using with vagrant boilerplate (https://github.com/Voronenko/devops-vagrant-ansi
             env: "vagrant"
         }
     end
-
-
 ```
+
+Using gilt
+
+```yaml
+
+  - git: https://github.com/oops-to-devops/monitored_box.git
+    version: master
+    files:
+      - src: roles
+        dst: provisioners/monitored_box/roles
+      - src: Makefile
+        dst: provisioners/monitored_box
+      - src: Readme.md
+        dst: provisioners/monitored_box
+      - src: *.yml
+        dst: provisioners/monitored_box
+      - src: version.txt
+        dst: provisioners/monitored_box
+      - src: init_galaxy.sh
+        dst: provisioners/monitored_box
+      - src: provision_box.sh
+        dst: provisioners/monitored_box
+```
+
