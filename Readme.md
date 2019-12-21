@@ -47,7 +47,7 @@ Using gilt
         dst: provisioners/monitored_box
       - src: Readme.md
         dst: provisioners/monitored_box
-      - src: *.yml
+      - src: "*.yml"
         dst: provisioners/monitored_box
       - src: version.txt
         dst: provisioners/monitored_box
